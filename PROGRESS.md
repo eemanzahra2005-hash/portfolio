@@ -5,7 +5,7 @@
 - [x] Phase 2 — Hero (word-mask name reveal, clip-path photo reveal + parallax, floating badges, magnetic CTAs, dotted grid + drifting blobs, scroll cue)
 - [x] Phase 3 — About + Skills (shared SectionHeading, count-up stats derived from content, education/cert cards, spotlight skill cards, two-row marquee with static reduced-motion fallback)
 - [x] Phase 4 — Experience (alternating centre-line timeline on lg / left-line on mobile, scroll-drawn accent line with spring, dots that fill + pulse when reached, "Current" badge, side slide-in cards, staggered bullets with Show more/less, tag chips)
-- [ ] Phase 5 — Projects
+- [x] Phase 5 — Projects (6 README-backed featured projects, tech filter chips with layout animations, title-seeded gradient cards with mouse-only 3D tilt + spotlight, accessible details dialog with shared-layout title, server-fetched "More on GitHub" list revalidated daily)
 - [ ] Phase 6 — Contact + Footer
 - [ ] Phase 7 — Polish / SEO
 - [ ] Phase 8 — Deploy
@@ -23,3 +23,8 @@
 - Timeline dots fill when the spring-smoothed line tip passes their centre (measured live), so they un-fill on scroll-up; the pulse ring plays only once.
 - The "Current" badge uses Tailwind emerald (requested green) — the one intentional exception to the accent-only colour rule.
 - Cards remount when the lg breakpoint resolves after hydration so the slide-in comes from the correct side.
+- Featured projects live in `projects` (`content.ts`); every description/bullet comes from the repo's README. NEHRI has no `year` (not stated anywhere) — it's hidden until filled in.
+- "More on GitHub" (`src/components/projects/MoreOnGithub.tsx`) is a server component: GitHub API with `next: { revalidate: 86400 }`, excluding forks, featured repos (matched by repo URL) and `hiddenRepos`. If GitHub is unreachable it shows only the "View all on GitHub" link. This makes `/` ISR (1 day).
+- Filter chips come from `projectsSection.filters` but only render when a featured project's tags match (`"React 19"` → `"React"` via `normalizeTag` in `src/lib/projects.ts`).
+- Card header gradients are generated from the title using only accent/surface tokens (`projectGradient`).
+- The details dialog is portalled to `<body>`, locks scroll through `useSmoothScroll().setLocked`, traps focus, closes on Esc/backdrop/close, and restores focus to the trigger.
