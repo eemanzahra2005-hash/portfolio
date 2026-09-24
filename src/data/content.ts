@@ -27,7 +27,10 @@ export interface Profile {
   about: string;
 }
 
+export type SkillIcon = "frontend" | "backend" | "data" | "tools" | "core";
+
 export interface SkillGroup {
+  icon: SkillIcon;
   title: string;
   items: string[];
 }
@@ -89,6 +92,7 @@ export const profile: Profile = {
 
 export const skills: SkillGroup[] = [
   {
+    icon: "frontend",
     title: "Frontend",
     items: [
       "HTML & CSS",
@@ -100,18 +104,22 @@ export const skills: SkillGroup[] = [
     ],
   },
   {
+    icon: "backend",
     title: "Backend",
     items: ["Node.js", "Express.js", "REST APIs", "MongoDB", "SQL"],
   },
   {
+    icon: "data",
     title: "Data",
     items: ["Python", "Tableau", "Looker Studio", "Excel", "Google Sheets"],
   },
   {
+    icon: "tools",
     title: "Tools",
     items: ["Git & GitHub", "VS Code", "Postman", "Vercel", "Render"],
   },
   {
+    icon: "core",
     title: "Core",
     items: ["DSA (C++)"],
   },
@@ -263,6 +271,50 @@ export const hero = {
   githubLabel: "GitHub profile (opens in a new tab)",
   emailLabel: `Email ${profile.email}`,
   phoneLabel: `Call ${profile.phone}`,
+} as const;
+
+export interface SectionHeadingContent {
+  index: string;
+  label: string;
+  title: string;
+  /** Word of the title rendered in italic accent. */
+  highlight?: string;
+  subtitle?: string;
+}
+
+export const sectionHeadings = {
+  about: {
+    index: "01",
+    label: "About",
+    title: "Turning ideas into reliable web products",
+    highlight: "reliable",
+  },
+  skills: {
+    index: "02",
+    label: "Skills",
+    title: "My toolkit",
+    highlight: "toolkit",
+    subtitle: "Technologies I use to design, build and ship.",
+  },
+} satisfies Partial<Record<SectionId, SectionHeadingContent>>;
+
+/** About section copy. Stat values are derived in the component from the data above. */
+export const aboutSection = {
+  currently:
+    "Currently working at The Trexa while studying Computer Science at Air University.",
+  statsLabel: "At a glance",
+  stats: {
+    roles: "Roles",
+    projects: "Projects",
+    technologies: "Technologies",
+    semester: "Semester · BSCS",
+  },
+  educationLabel: "Education",
+  certificationLabel: "Certification",
+} as const;
+
+export const skillsSection = {
+  countLabel: (n: number) => `${n} ${n === 1 ? "skill" : "skills"}`,
 } as const;
 
 /** UI labels and accessible names. */

@@ -1,12 +1,12 @@
 import { Navbar } from "@/components/Navbar";
+import { About } from "@/components/sections/About";
 import { Hero } from "@/components/sections/Hero";
+import { Skills } from "@/components/sections/Skills";
 import { Reveal } from "@/components/motion/Reveal";
 import { sectionTitles, type SectionId } from "@/data/content";
 
 // Placeholder sections, replaced phase by phase.
 const sections: SectionId[] = [
-  "about",
-  "skills",
   "experience",
   "projects",
   "contact",
@@ -18,6 +18,8 @@ export default function Home() {
       <Navbar />
       <main id="main" tabIndex={-1} className="outline-none">
         <Hero />
+        <About />
+        <Skills />
         {sections.map((id) => (
             <section
               key={id}
