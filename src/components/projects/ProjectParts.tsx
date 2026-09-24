@@ -30,7 +30,7 @@ export function ProjectVisual({
           {normalizeTag(project.tags[0] ?? "")}
         </span>
         {project.year && (
-          <span className="rounded-full bg-surface/70 px-2.5 py-1 text-xs tabular-nums text-muted backdrop-blur-sm">
+          <span className="rounded-full bg-surface/90 px-2.5 py-1 text-xs tabular-nums text-muted backdrop-blur-sm">
             {project.year}
           </span>
         )}

@@ -2,20 +2,19 @@
 
 import clsx from "clsx";
 import { ArrowUpRight } from "lucide-react";
-import {
-  AnimatePresence,
-  LayoutGroup,
-  motion,
-  useInView,
-  useReducedMotion,
-  useSpring,
-} from "motion/react";
+import { AnimatePresence, LayoutGroup, motion, useInView, useSpring } from "motion/react";
+import dynamic from "next/dynamic";
 import { useRef, useState, type MouseEvent, type PointerEvent } from "react";
 import { EASE } from "@/components/motion/SmoothScroll";
+import { useReducedMotion } from "@/components/motion/useReducedMotion";
 import { projects, projectsSection, type Project } from "@/data/content";
 import { matchesFilter } from "@/lib/projects";
-import { ProjectDialog } from "./ProjectDialog";
 import { ProjectLinks, ProjectVisual } from "./ProjectParts";
+
+// Only needed after a click, so it's split out of the initial bundle.
+const ProjectDialog = dynamic(() => import("./ProjectDialog").then((m) => m.ProjectDialog), {
+  ssr: false,
+});
 
 const ALL = projectsSection.allFilter;
 /** Only offer filters that at least one featured project actually uses. */
@@ -27,7 +26,7 @@ const MAX_CARD_TAGS = 4;
 const SPRING = { stiffness: 220, damping: 22, mass: 0.6 };
 
 export function FeaturedProjects() {
-  const reduce = useReducedMotion() ?? false;
+  const reduce = useReducedMotion();
   const [filter, setFilter] = useState<string>(ALL);
   const [interacted, setInteracted] = useState(false);
   const [selected, setSelected] = useState<Project | null>(null);
@@ -127,7 +126,7 @@ interface ProjectCardProps {
 }
 
 function ProjectCard({ project, index, large, onOpen }: ProjectCardProps) {
-  const reduce = useReducedMotion() ?? false;
+  const reduce = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
   const maxTilt = large ? 3 : 6;
 
@@ -181,7 +180,7 @@ function ProjectCard({ project, index, large, onOpen }: ProjectCardProps) {
     >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-10 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+        className="pointer-events-none absolute inset-0 z-10 opacity-0 transition-opacity duration-500 group-hover:opacity-100 motion-reduce:hidden"
         style={{
           background:
             "radial-gradient(360px circle at var(--spot-x, 50%) var(--spot-y, 0%), color-mix(in srgb, var(--color-accent) 8%, transparent), transparent 70%)",

@@ -1,7 +1,7 @@
 "use client";
 
 import { Check, Copy, Mail, MapPin, Phone } from "lucide-react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import {
   useEffect,
   useRef,
@@ -15,6 +15,7 @@ import { GithubIcon } from "@/components/icons/GithubIcon";
 import { LinkedinIcon } from "@/components/icons/LinkedinIcon";
 import { RevealGroup, RevealItem } from "@/components/motion/Reveal";
 import { EASE } from "@/components/motion/SmoothScroll";
+import { useReducedMotion } from "@/components/motion/useReducedMotion";
 import { contactSection, profile } from "@/data/content";
 import { LocalTime } from "./LocalTime";
 
@@ -98,7 +99,7 @@ async function copyText(text: string) {
 }
 
 export function ContactCards() {
-  const reduce = useReducedMotion() ?? false;
+  const reduce = useReducedMotion();
   const [copied, setCopied] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout>>(undefined);

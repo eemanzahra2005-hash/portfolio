@@ -6,7 +6,6 @@ import {
   AnimatePresence,
   motion,
   useMotionValueEvent,
-  useReducedMotion,
   useScroll,
   useSpring,
   type MotionValue,
@@ -14,6 +13,7 @@ import {
 } from "motion/react";
 import { useId, useRef, useState, useSyncExternalStore, type RefObject } from "react";
 import { EASE } from "@/components/motion/SmoothScroll";
+import { useReducedMotion } from "@/components/motion/useReducedMotion";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import {
   experience,
@@ -41,7 +41,7 @@ function useIsDesktop() {
 }
 
 export function Experience() {
-  const reduce = useReducedMotion() ?? false;
+  const reduce = useReducedMotion();
   const timelineRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: timelineRef,
@@ -98,7 +98,7 @@ interface TimelineItemProps {
 }
 
 function TimelineItem({ job, side, progress, timelineRef }: TimelineItemProps) {
-  const reduce = useReducedMotion() ?? false;
+  const reduce = useReducedMotion();
   const isDesktop = useIsDesktop();
   const dotRef = useRef<HTMLSpanElement>(null);
   const [reached, setReached] = useState(false);
@@ -170,7 +170,7 @@ function TimelineItem({ job, side, progress, timelineRef }: TimelineItemProps) {
 }
 
 function ExperienceCard({ job, fromX }: { job: Job; fromX: number }) {
-  const reduce = useReducedMotion() ?? false;
+  const reduce = useReducedMotion();
   const listId = useId();
   const [expanded, setExpanded] = useState(false);
   const limit = experienceSection.collapsedCount;
@@ -308,7 +308,7 @@ function Bullet({ children }: { children: string }) {
 }
 
 function CurrentBadge() {
-  const reduce = useReducedMotion() ?? false;
+  const reduce = useReducedMotion();
   return (
     <span className="inline-flex shrink-0 items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700">
       <span aria-hidden="true" className="relative flex size-2">

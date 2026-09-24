@@ -443,7 +443,6 @@ export const projectsSection = {
   stars: (n: number) => `${n} ${n === 1 ? "star" : "stars"}`,
   updated: "Updated",
   viewAll: "View all on GitHub",
-  viewAllLabel: "View all repositories on GitHub (opens in a new tab)",
   /** Max repos shown in "More on GitHub". */
   moreLimit: 9,
 } as const;
@@ -519,7 +518,6 @@ export const ui = {
   skipToContent: "Skip to content",
   downloadCv: "Download CV",
   downloadCvFile: "Download CV as PDF",
-  openCvNewTab: "Open CV (PDF) in a new tab",
   openMenu: "Open menu",
   closeMenu: "Close menu",
   mainNav: "Main navigation",
@@ -530,6 +528,58 @@ export const ui = {
 
 export const site = {
   title: `${profile.name} — ${profile.role}`,
+  /** Page titles become "Page — Syeda Eeman Zahra". */
+  titleTemplate: `%s — ${profile.name}`,
   description:
     "Portfolio of Syeda Eeman Zahra, a Full-Stack Developer in Islamabad, Pakistan, building fast, reliable web apps with React, Next.js, TypeScript, Node.js and REST APIs.",
+  keywords: [
+    profile.name,
+    "Full-Stack Developer",
+    "React",
+    "Next.js",
+    "Node.js",
+    "TypeScript",
+    "Islamabad",
+    "Pakistan",
+  ],
+  locale: "en_US",
+  /** Social preview card (Open Graph / Twitter image). */
+  ogImage: {
+    alt: `${profile.name} — ${profile.role} · React, Next.js, Node.js`,
+    stack: "React · Next.js · Node.js",
+  },
+  /** Web app manifest. */
+  manifest: {
+    shortName: profile.shortName,
+    backgroundColor: "#fafaf9",
+    themeColor: "#2563eb",
+  },
+} as const;
+
+/** Structured data (JSON-LD Person) — organisation names as they're publicly known. */
+export const personSchema = {
+  alumniOf: "Air University",
+  worksFor: "The Trexa",
+  addressLocality: "Islamabad",
+  addressCountry: "PK",
+  knowsAbout: [
+    "JavaScript",
+    "TypeScript",
+    "React",
+    "Next.js",
+    "Node.js",
+    "Express.js",
+    "REST APIs",
+    "MongoDB",
+    "SQL",
+    "Tailwind CSS",
+    "Python",
+  ],
+} as const;
+
+export const notFoundPage = {
+  title: "Page not found",
+  code: "404",
+  message: "This page wandered off.",
+  cta: "Back home",
 } as const;

@@ -1,19 +1,13 @@
 "use client";
 
 import { ArrowRight, Briefcase, Download, GraduationCap, Mail, Phone } from "lucide-react";
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-  type Transition,
-  type Variants,
-} from "motion/react";
+import { motion, useScroll, useTransform, type Transition, type Variants } from "motion/react";
 import Image from "next/image";
 import { Fragment, useRef, type ComponentType, type SVGProps } from "react";
 import { GithubIcon } from "@/components/icons/GithubIcon";
 import { Magnetic } from "@/components/motion/Magnetic";
 import { EASE } from "@/components/motion/SmoothScroll";
+import { useReducedMotion } from "@/components/motion/useReducedMotion";
 import { hero, profile, ui, type HeroBadge } from "@/data/content";
 
 const WORD_STAGGER = 0.08;
@@ -42,13 +36,13 @@ const badgeIcons: Record<HeroBadge["icon"], ComponentType<SVGProps<SVGSVGElement
 
 const badgePositions = [
   "-left-5 -top-6 sm:-left-10 sm:top-8 lg:-left-12 lg:top-10",
-  "-right-5 -bottom-6 sm:-right-10 sm:bottom-8 lg:-right-10 lg:bottom-12",
+  "-right-5 -bottom-6 sm:-right-10 sm:bottom-8 lg:-right-4 lg:bottom-12 xl:-right-10",
 ];
 
 const fadeUp = { hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } };
 
 export function Hero() {
-  const reduce = useReducedMotion() ?? false;
+  const reduce = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -230,7 +224,7 @@ export function Hero() {
                   alt={profile.photoAlt}
                   fill
                   preload
-                  sizes="(min-width: 1024px) 416px, (min-width: 640px) 320px, 70vw"
+                  sizes="(min-width: 1152px) 416px, (min-width: 1024px) 37vw, (min-width: 640px) 320px, 70vw"
                   className="object-cover"
                 />
               </motion.div>

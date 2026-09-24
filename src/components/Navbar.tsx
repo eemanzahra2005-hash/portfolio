@@ -69,6 +69,7 @@ export function Navbar() {
   const active = useActiveSection(trackedIds);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useMotionValueEvent(scrollY, "change", (y) => {
     const prev = scrollY.getPrevious() ?? 0;
@@ -77,7 +78,7 @@ export function Navbar() {
     else if (y < prev) setHidden(false);
   });
 
-  // Scroll lock, Escape to close, focus management for the mobile menu.
+  // Scroll lock, Escape to close, focus kept inside toggle + menu while it's open.
   useEffect(() => {
     if (!menuOpen) return;
     setLocked(true);
@@ -87,6 +88,20 @@ export function Navbar() {
       if (e.key === "Escape") {
         setMenuOpen(false);
         button?.focus();
+        return;
+      }
+      if (e.key !== "Tab" || !button || !menuRef.current) return;
+      const items = [button, ...menuRef.current.querySelectorAll<HTMLElement>("a[href], button")];
+      const first = items[0];
+      const last = items[items.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+      const inside = active !== null && items.includes(active);
+      if (e.shiftKey && (active === first || !inside)) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && (active === last || !inside)) {
+        e.preventDefault();
+        first.focus();
       }
     };
     const onResize = () => {
@@ -195,11 +210,9 @@ export function Navbar() {
       <AnimatePresence>
         {menuOpen && (
           <motion.div
+            ref={menuRef}
             id="mobile-menu"
             key="mobile-menu"
-            role="dialog"
-            aria-modal="true"
-            aria-label={ui.mobileNav}
             data-lenis-prevent
             initial="closed"
             animate="open"
@@ -245,11 +258,11 @@ function CvActions({ className }: { className?: string }) {
         href={profile.cv}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label={ui.openCvNewTab}
         className="inline-flex h-10 items-center gap-2 rounded-full bg-foreground px-4 text-sm font-medium text-surface transition-colors duration-200 hover:bg-accent"
       >
         <FileText className="size-4" aria-hidden="true" />
         {ui.downloadCv}
+        <span className="sr-only"> {ui.opensInNewTab}</span>
       </a>
       <a
         href={profile.cv}

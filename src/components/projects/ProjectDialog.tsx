@@ -1,10 +1,11 @@
 "use client";
 
 import { X } from "lucide-react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import { useEffect, useId, useRef } from "react";
 import { createPortal } from "react-dom";
 import { EASE, useSmoothScroll } from "@/components/motion/SmoothScroll";
+import { useReducedMotion } from "@/components/motion/useReducedMotion";
 import { projectsSection, type Project } from "@/data/content";
 import { ProjectLinks, ProjectVisual } from "./ProjectParts";
 
@@ -19,7 +20,7 @@ interface ProjectDialogProps {
 
 /** Only mounted on the client after a click, so rendering into document.body is safe. */
 export function ProjectDialog({ project, index, onClose }: ProjectDialogProps) {
-  const reduce = useReducedMotion() ?? false;
+  const reduce = useReducedMotion();
   const { setLocked } = useSmoothScroll();
   const panelRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);

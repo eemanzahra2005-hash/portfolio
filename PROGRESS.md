@@ -7,7 +7,7 @@
 - [x] Phase 4 — Experience (alternating centre-line timeline on lg / left-line on mobile, scroll-drawn accent line with spring, dots that fill + pulse when reached, "Current" badge, side slide-in cards, staggered bullets with Show more/less, tag chips)
 - [x] Phase 5 — Projects (6 README-backed featured projects, tech filter chips with layout animations, title-seeded gradient cards with mouse-only 3D tilt + spotlight, accessible details dialog with shared-layout title, server-fetched "More on GitHub" list revalidated daily)
 - [x] Phase 6 — Contact + Footer (contact cards with copy-email toast + live Islamabad clock, floating-label form with inline validation sent via a Server Action to Web3Forms, animated button states, footer with closing line + drawn-underline email, floating back-to-top with scroll-progress ring)
-- [ ] Phase 7 — Polish / SEO
+- [x] Phase 7 — Polish / SEO (full metadata + canonical, OG/Twitter image with photo and brand fonts, EZ monogram icons, sitemap/robots/manifest, Person JSON-LD, floating 404, performance, accessibility, reduced-motion and responsive audit)
 - [ ] Phase 8 — Deploy
 
 ## Notes
@@ -35,3 +35,28 @@
 - Form errors use Tailwind red (with an icon, so not colour-only) — a second intentional exception to the accent-only rule.
 - The live clock uses `useSyncExternalStore` (empty on the server, so no hydration mismatch) and ticks on minute boundaries.
 - `devIndicators: false` in `next.config.ts`.
+- SEO: `metadataBase` comes from `NEXT_PUBLIC_SITE_URL` (`src/lib/site.ts`, falls back to localhost). SEO copy lives in `site` / `personSchema` in `content.ts`.
+- OG/Twitter images (`src/lib/og.tsx`) and icons (`src/lib/icon.tsx`) are built at build time with `next/og`. `ImageResponse` can't read woff2, so TTFs are vendored in `assets/fonts/` (OFL). The apple-touch icon is full-bleed because iOS applies its own rounded mask. The 32px favicon is a rounded square.
+- `useReducedMotion` comes from `src/components/motion/useReducedMotion.ts`, not `motion/react`. Motion's hook reads the media query during the first client render, which caused a hydration mismatch (#418) for reduced-motion users.
+- `ScrollProgress` is rendered in `page.tsx`, not the root layout, so it doesn't show a full bar on the non-scrolling 404 page.
+- The project dialog loads through `next/dynamic` (a separate ~4 kB chunk fetched on first open).
+
+## Phase 7 audit
+
+**Fixed**
+- Contrast: `muted` changed from `#78716c` to `#716a65`. It was 4.41:1 on `accent-soft` and chip backgrounds, and now passes AA everywhere (≥4.87:1). The project year badge background became more opaque for the same reason.
+- Hydration: fixed the React #418 hydration mismatch on the home page when reduced motion is on (see the `useReducedMotion` note above).
+- Mobile menu: was `role="dialog" aria-modal` while its close button sat outside the dialog. It's now a disclosure with focus kept inside the toggle and links (Tab/Shift+Tab loop), and Esc still returns focus to the toggle.
+- Label-in-name (WCAG 2.5.3): the navbar "Download CV" and "View all on GitHub" links had aria-labels that didn't include their visible text. They now use visible text plus an sr-only "(opens in a new tab)".
+- Reduced motion: `ScrollProgress` now follows the scroll directly without a spring, and the mouse spotlights on skill/project cards are hidden.
+- Responsive: at 1024–1279px the "Air University" hero badge was cut off at the viewport edge. It's pulled in on `lg` and gets its original offset back from `xl`.
+- 404: removed the full-width scroll-progress bar.
+- Performance: the Skills section is now a server component, with only `SkillCard` on the client. The project dialog is lazy-loaded, and the hero image `sizes` match its real rendered width (≤416px).
+- Cleanup: removed the default `favicon.ico` and the unused `next.svg`, `vercel.svg`, `file.svg`, `globe.svg` and `window.svg`. Removed unused `ui.openCvNewTab` and `projectsSection.viewAllLabel`. Rewrote the README.
+
+**Verified (headless Chrome against `next start`)**
+- No horizontal scroll and no hero badge overlap or clipping at 360, 390, 768, 1024, 1280, 1536 and 1920px. No console errors or warnings.
+- Exactly one `h1`. The skip link moves focus to `<main>`. The dialog fits a 360×640 screen and scrolls inside, and Esc and the focus trap work, with focus returning to the trigger.
+- Reduced motion: no running animations, nothing moves over 1.5 s, every reveal is visible and Lenis is off.
+- Hover effects (tilt, magnetic, spotlight) run only for `pointerType === "mouse"`, and Tailwind v4 `hover:` applies only on devices that can hover.
+- First-load JS (gzip, not counting the `noModule` polyfills): `/` ≈ 226 kB, of which ≈ 37 kB is page-specific. The 404 page ≈ 189 kB.

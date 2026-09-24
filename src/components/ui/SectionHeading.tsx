@@ -1,9 +1,10 @@
 "use client";
 
 import clsx from "clsx";
-import { motion, useReducedMotion, type Variants } from "motion/react";
+import { motion, type Variants } from "motion/react";
 import { Fragment } from "react";
 import { EASE } from "@/components/motion/SmoothScroll";
+import { useReducedMotion } from "@/components/motion/useReducedMotion";
 import type { SectionHeadingContent } from "@/data/content";
 
 const VIEWPORT = { once: true, margin: "0px 0px -10% 0px" } as const;
@@ -17,7 +18,7 @@ interface SectionHeadingProps {
 
 /** Eyebrow ("01 — About") + serif title with masked word reveal + optional subtitle. */
 export function SectionHeading({ id, content, className }: SectionHeadingProps) {
-  const reduce = useReducedMotion() ?? false;
+  const reduce = useReducedMotion();
   const words = content.title.split(" ");
   const titleEnd = 0.15 + words.length * 0.06;
 

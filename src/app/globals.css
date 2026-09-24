@@ -9,7 +9,7 @@
   --color-background: #fafaf9;
   --color-surface: #ffffff;
   --color-foreground: #1c1917;
-  --color-muted: #78716c;
+  --color-muted: #716a65; /* stone, darkened so small text passes AA on accent-soft too */
   --color-border: #e7e5e4;
   --color-accent: #2563eb;
   --color-accent-soft: #eff6ff;
@@ -24,6 +24,16 @@
     }
     50% {
       transform: translateY(-3px);
+    }
+  }
+
+  --animate-float: float 3.2s cubic-bezier(0.22, 1, 0.36, 1) infinite alternate;
+  @keyframes float {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-14px);
     }
   }
 

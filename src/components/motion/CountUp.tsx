@@ -1,7 +1,8 @@
 "use client";
 
-import { animate, useInView, useReducedMotion } from "motion/react";
+import { animate, useInView } from "motion/react";
 import { useEffect, useRef } from "react";
+import { useReducedMotion } from "./useReducedMotion";
 
 interface CountUpProps {
   value: number;
@@ -29,7 +30,7 @@ function formatValue(n: number, suffix: string, ordinal: boolean) {
 export function CountUp({ value, suffix = "", ordinal = false, className }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "0px 0px -10% 0px" });
-  const reduce = useReducedMotion() ?? false;
+  const reduce = useReducedMotion();
   const final = formatValue(value, suffix, ordinal);
 
   useEffect(() => {

@@ -2,15 +2,10 @@
 
 import clsx from "clsx";
 import { ArrowUp } from "lucide-react";
-import {
-  AnimatePresence,
-  motion,
-  useMotionValueEvent,
-  useReducedMotion,
-  useScroll,
-} from "motion/react";
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 import { useState, type ReactNode } from "react";
 import { EASE, useSmoothScroll } from "@/components/motion/SmoothScroll";
+import { useReducedMotion } from "@/components/motion/useReducedMotion";
 import { footer } from "@/data/content";
 
 const SHOW_AFTER = 600;
@@ -46,7 +41,7 @@ export function BackToTopButton({ className, children }: BackToTopButtonProps) {
 
 /** Floating circular button with a scroll-progress ring; appears after 600px of scroll. */
 export function BackToTopFloating() {
-  const reduce = useReducedMotion() ?? false;
+  const reduce = useReducedMotion();
   const toTop = useBackToTop();
   const { scrollY, scrollYProgress } = useScroll();
   const [visible, setVisible] = useState(false);

@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Instrument_Serif } from "next/font/google";
-import { ScrollProgress } from "@/components/motion/ScrollProgress";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { profile, site } from "@/data/content";
+import { siteUrl } from "@/lib/site";
 import "./globals.css";
 
 const geist = Geist({
@@ -19,35 +19,42 @@ const instrumentSerif = Instrument_Serif({
   display: "swap",
 });
 
+// Open Graph / Twitter images come from app/opengraph-image.tsx and app/twitter-image.tsx.
 export const metadata: Metadata = {
-  title: site.title,
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: site.title,
+    template: site.titleTemplate,
+  },
   description: site.description,
-  authors: [{ name: profile.name }],
+  applicationName: profile.name,
+  keywords: [...site.keywords],
+  authors: [{ name: profile.name, url: siteUrl }],
   creator: profile.name,
-  keywords: [
-    profile.name,
-    profile.role,
-    "React",
-    "Next.js",
-    "TypeScript",
-    "Node.js",
-    "Portfolio",
-    profile.location,
-  ],
+  publisher: profile.name,
+  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
+    locale: site.locale,
+    url: "/",
+    siteName: profile.name,
     title: site.title,
     description: site.description,
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: site.title,
     description: site.description,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#fafaf9",
+  themeColor: site.manifest.backgroundColor,
   colorScheme: "light",
 };
 
@@ -59,7 +66,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-screen bg-background font-sans text-foreground">
         <SmoothScroll>
-          <ScrollProgress />
           {children}
         </SmoothScroll>
       </body>

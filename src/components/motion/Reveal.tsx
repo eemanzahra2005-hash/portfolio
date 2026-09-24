@@ -1,8 +1,9 @@
 "use client";
 
-import { motion, useReducedMotion, type Variants } from "motion/react";
+import { motion, type Variants } from "motion/react";
 import type { ReactNode } from "react";
 import { EASE } from "./SmoothScroll";
+import { useReducedMotion } from "./useReducedMotion";
 
 const DURATION = 0.7;
 const STAGGER = 0.08;

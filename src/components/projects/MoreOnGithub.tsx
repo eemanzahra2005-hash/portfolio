@@ -65,11 +65,11 @@ export async function MoreOnGithub() {
           href={profile.github}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label={projectsSection.viewAllLabel}
           className="group inline-flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-accent hover:text-accent"
         >
           <GithubIcon className="size-4" />
           {projectsSection.viewAll}
+          <span className="sr-only"> {ui.opensInNewTab}</span>
           <ArrowUpRight
             aria-hidden="true"
             className="size-4 transition-transform duration-300 ease-out-soft group-hover:-translate-y-0.5 group-hover:translate-x-0.5 motion-reduce:transition-none"

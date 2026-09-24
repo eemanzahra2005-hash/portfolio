@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 import { ArrowRight, Check, CircleAlert, CircleCheck, LoaderCircle, RotateCw } from "lucide-react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import {
   startTransition,
   useActionState,
@@ -14,6 +14,7 @@ import {
 } from "react";
 import { sendContact } from "@/app/actions/contact";
 import { EASE } from "@/components/motion/SmoothScroll";
+import { useReducedMotion } from "@/components/motion/useReducedMotion";
 import { contactSection, profile } from "@/data/content";
 import {
   CONTACT_FIELDS,
@@ -39,7 +40,7 @@ const FIELD_META: Record<ContactField, { type?: string; autoComplete: string; mu
 type ButtonState = "idle" | "pending" | "success" | "error";
 
 export function ContactForm() {
-  const reduce = useReducedMotion() ?? false;
+  const reduce = useReducedMotion();
   const [state, formAction, pending] = useActionState(sendContact, INITIAL);
   const [values, setValues] = useState<ContactValues>(EMPTY);
   const [touched, setTouched] = useState<Partial<Record<ContactField, boolean>>>({});

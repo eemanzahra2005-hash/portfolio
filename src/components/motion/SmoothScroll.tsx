@@ -1,7 +1,7 @@
 "use client";
 
 import Lenis from "lenis";
-import { MotionConfig, useReducedMotion } from "motion/react";
+import { MotionConfig } from "motion/react";
 import {
   createContext,
   useCallback,
@@ -11,6 +11,7 @@ import {
   useRef,
   type ReactNode,
 } from "react";
+import { useReducedMotion } from "./useReducedMotion";
 
 export const EASE = [0.22, 1, 0.36, 1] as const;
 
