@@ -83,6 +83,9 @@ html.lenis body {
     opacity: 1 !important;
     transform: none !important;
   }
+  [data-reveal-clip] {
+    clip-path: none !important;
+  }
   *,
   *::before,
   *::after {

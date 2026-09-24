@@ -240,6 +240,31 @@ export const sectionTitles: Record<SectionId, string> = {
   contact: "Contact",
 };
 
+export interface HeroBadge {
+  icon: "briefcase" | "graduation";
+  label: string;
+  value: string;
+}
+
+const heroBadges: HeroBadge[] = [
+  { icon: "briefcase", label: "Currently", value: "Full-Stack Dev @ The Trexa" },
+  { icon: "graduation", label: "BSCS · 5th Semester", value: "Air University" },
+];
+
+/** Hero section copy. */
+export const hero = {
+  eyebrow: `${profile.role} · ${profile.location}`,
+  /** Word of the name rendered in italic accent. */
+  highlight: "Zahra",
+  primaryCta: { label: "View my work", href: "#projects" },
+  badges: heroBadges,
+  scrollCue: "Scroll",
+  contactLinks: "Contact links",
+  githubLabel: "GitHub profile (opens in a new tab)",
+  emailLabel: `Email ${profile.email}`,
+  phoneLabel: `Call ${profile.phone}`,
+} as const;
+
 /** UI labels and accessible names. */
 export const ui = {
   skipToContent: "Skip to content",
@@ -251,6 +276,7 @@ export const ui = {
   mainNav: "Main navigation",
   mobileNav: "Mobile navigation",
   homeLink: "Back to top",
+  opensInNewTab: "(opens in a new tab)",
 } as const;
 
 export const site = {

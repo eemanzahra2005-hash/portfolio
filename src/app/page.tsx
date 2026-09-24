@@ -1,9 +1,10 @@
 import { Navbar } from "@/components/Navbar";
+import { Hero } from "@/components/sections/Hero";
 import { Reveal } from "@/components/motion/Reveal";
 import { sectionTitles, type SectionId } from "@/data/content";
 
+// Placeholder sections, replaced phase by phase.
 const sections: SectionId[] = [
-  "hero",
   "about",
   "skills",
   "experience",
@@ -16,9 +17,8 @@ export default function Home() {
     <>
       <Navbar />
       <main id="main" tabIndex={-1} className="outline-none">
-        {sections.map((id) => {
-          const Heading = id === "hero" ? "h1" : "h2";
-          return (
+        <Hero />
+        {sections.map((id) => (
             <section
               key={id}
               id={id}
@@ -28,17 +28,16 @@ export default function Home() {
             >
               <div className="mx-auto w-full max-w-6xl px-5 sm:px-8">
                 <Reveal>
-                  <Heading
+                  <h2
                     id={`${id}-title`}
                     className="font-display text-5xl tracking-tight text-foreground sm:text-7xl"
                   >
                     {sectionTitles[id]}
-                  </Heading>
+                  </h2>
                 </Reveal>
               </div>
             </section>
-          );
-        })}
+        ))}
       </main>
     </>
   );
