@@ -6,7 +6,7 @@
 - [x] Phase 3 — About + Skills (shared SectionHeading, count-up stats derived from content, education/cert cards, spotlight skill cards, two-row marquee with static reduced-motion fallback)
 - [x] Phase 4 — Experience (alternating centre-line timeline on lg / left-line on mobile, scroll-drawn accent line with spring, dots that fill + pulse when reached, "Current" badge, side slide-in cards, staggered bullets with Show more/less, tag chips)
 - [x] Phase 5 — Projects (6 README-backed featured projects, tech filter chips with layout animations, title-seeded gradient cards with mouse-only 3D tilt + spotlight, accessible details dialog with shared-layout title, server-fetched "More on GitHub" list revalidated daily)
-- [ ] Phase 6 — Contact + Footer
+- [x] Phase 6 — Contact + Footer (contact cards with copy-email toast + live Islamabad clock, floating-label form with inline validation sent via a Server Action to Web3Forms, animated button states, footer with closing line + drawn-underline email, floating back-to-top with scroll-progress ring)
 - [ ] Phase 7 — Polish / SEO
 - [ ] Phase 8 — Deploy
 
@@ -28,3 +28,10 @@
 - Filter chips come from `projectsSection.filters` but only render when a featured project's tags match (`"React 19"` → `"React"` via `normalizeTag` in `src/lib/projects.ts`).
 - Card header gradients are generated from the title using only accent/surface tokens (`projectGradient`).
 - The details dialog is portalled to `<body>`, locks scroll through `useSmoothScroll().setLocked`, traps focus, closes on Esc/backdrop/close, and restores focus to the trigger.
+- Contact form: `src/app/actions/contact.ts` (Server Action) posts to Web3Forms with `WEB3FORMS_KEY` from the server env (copy `.env.example` → `.env.local`; also set it in Vercel). Without the key the action returns an error and the UI shows the "email me directly" mailto fallback. The key/endpoint never reach client bundles.
+- Validation rules live in `src/lib/contact.ts` and are shared by the client (inline messages after blur/submit) and the server (re-validated). All fields are required; message min 10 chars.
+- Spam: hidden `botcheck` honeypot; if filled, the action reports success without sending.
+- The form submits through `onSubmit` → `startTransition(formAction)` so React doesn't auto-reset fields on error; it resets only on success. `action={formAction}` stays for no-JS.
+- Form errors use Tailwind red (with an icon, so not colour-only) — a second intentional exception to the accent-only rule.
+- The live clock uses `useSyncExternalStore` (empty on the server, so no hydration mismatch) and ticks on minute boundaries.
+- `devIndicators: false` in `next.config.ts`.

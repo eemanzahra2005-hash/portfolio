@@ -322,16 +322,6 @@ export const navLinks: NavLink[] = [
   { id: "contact", label: "Contact" },
 ];
 
-/** Section headings (placeholders until each phase builds the real section). */
-export const sectionTitles: Record<SectionId, string> = {
-  hero: profile.name,
-  about: "About",
-  skills: "Skills",
-  experience: "Experience",
-  projects: "Projects",
-  contact: "Contact",
-};
-
 export interface HeroBadge {
   icon: "briefcase" | "graduation";
   label: string;
@@ -394,6 +384,13 @@ export const sectionHeadings = {
     highlight: "built",
     subtitle: "A selection of my recent work.",
   },
+  contact: {
+    index: "05",
+    label: "Contact",
+    title: "Let's build something together",
+    highlight: "together",
+    subtitle: "Have a role, project or idea? My inbox is always open.",
+  },
 } satisfies Partial<Record<SectionId, SectionHeadingContent>>;
 
 /** About section copy. Stat values are derived in the component from the data above. */
@@ -449,6 +446,72 @@ export const projectsSection = {
   viewAllLabel: "View all repositories on GitHub (opens in a new tab)",
   /** Max repos shown in "More on GitHub". */
   moreLimit: 9,
+} as const;
+
+/** Contact section copy. Field rules live in `src/lib/contact.ts`. */
+export const contactSection = {
+  cardsLabel: "Contact details",
+  cards: {
+    email: "Email",
+    phone: "Phone",
+    location: "Location",
+    github: "GitHub",
+    linkedin: "LinkedIn",
+  },
+  emailLabel: `Email ${profile.email}`,
+  phoneLabel: `Call ${profile.phone}`,
+  githubLabel: "GitHub profile (opens in a new tab)",
+  linkedinLabel: "LinkedIn profile (opens in a new tab)",
+  copy: "Copy",
+  copied: "Copied",
+  copyLabel: "Copy email address",
+  copiedToast: "Email copied",
+  copyFailedToast: "Couldn't copy — select the address instead",
+  /** IANA zone for the live clock, plus the label shown after it. */
+  timeZone: "Asia/Karachi",
+  localTime: (time: string) => `My local time: ${time} (PKT)`,
+  form: {
+    label: "Contact form",
+    fields: {
+      name: "Name",
+      email: "Email",
+      subject: "Subject",
+      message: "Message",
+    },
+    honeypot: "Leave this field empty",
+    errors: {
+      required: (field: string) => `${field} is required.`,
+      email: "Enter a valid email address.",
+      tooShort: (field: string, min: number) =>
+        `${field} must be at least ${min} characters.`,
+      tooLong: (field: string, max: number) =>
+        `${field} must be at most ${max} characters.`,
+    },
+    submit: "Send message",
+    pending: "Sending…",
+    success: "Message sent!",
+    retry: "Try again",
+    successTitle: "Thanks for reaching out!",
+    successBody: "Your message is on its way. I'll reply as soon as I can.",
+    errorText: "Something went wrong —",
+    errorLink: "email me directly",
+  },
+  /** Sender name on the Web3Forms notification email. */
+  fromName: "Portfolio contact",
+} as const;
+
+export const footer = {
+  closing: "Open to new opportunities",
+  /** Word of the closing line rendered in italic accent. */
+  highlight: "opportunities",
+  emailLabel: `Email ${profile.email}`,
+  copyright: (year: number) => `© ${year} ${profile.name}`,
+  builtWith: "Built with Next.js, Tailwind CSS & Motion",
+  navLabel: "Footer navigation",
+  socialLabel: "Social links",
+  githubLabel: "GitHub (opens in a new tab)",
+  linkedinLabel: "LinkedIn (opens in a new tab)",
+  backToTop: "Back to top",
 } as const;
 
 /** UI labels and accessible names. */
