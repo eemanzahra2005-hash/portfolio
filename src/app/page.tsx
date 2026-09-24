@@ -1,16 +1,13 @@
 import { Navbar } from "@/components/Navbar";
 import { About } from "@/components/sections/About";
+import { Experience } from "@/components/sections/Experience";
 import { Hero } from "@/components/sections/Hero";
 import { Skills } from "@/components/sections/Skills";
 import { Reveal } from "@/components/motion/Reveal";
 import { sectionTitles, type SectionId } from "@/data/content";
 
 // Placeholder sections, replaced phase by phase.
-const sections: SectionId[] = [
-  "experience",
-  "projects",
-  "contact",
-];
+const sections: SectionId[] = ["projects", "contact"];
 
 export default function Home() {
   return (
@@ -20,6 +17,7 @@ export default function Home() {
         <Hero />
         <About />
         <Skills />
+        <Experience />
         {sections.map((id) => (
             <section
               key={id}

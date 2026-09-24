@@ -38,8 +38,14 @@ export interface SkillGroup {
 export interface Experience {
   role: string;
   company: string;
+  /** Location / work arrangement tag. */
+  location: string;
   period: string;
+  /** Marks the ongoing role (shows the "Current" badge). */
+  current?: boolean;
   points: string[];
+  /** Optional tech/domain chips shown at the bottom of the card. */
+  tags?: string[];
 }
 
 export interface Project {
@@ -127,19 +133,23 @@ export const skills: SkillGroup[] = [
 
 export const experience: Experience[] = [
   {
-    role: "Full-Stack Developer (Remote, Contract)",
+    role: "Full-Stack Developer",
     company: "The Trexa (Private) Limited",
+    location: "Remote · Contract",
     period: "Sep 2026 – Present",
+    current: true,
     points: [
       "Develop, maintain, test and optimize responsive front-end interfaces and back-end services.",
       "Design and integrate APIs, databases, authentication flows and third-party services.",
       "Write maintainable code with Git and support debugging, deployment and documentation.",
       "Collaborate with management and team members to deliver secure, reliable solutions.",
     ],
+    tags: ["Full-Stack", "APIs", "Databases", "Auth"],
   },
   {
-    role: "Frontend Developer Intern (Remote)",
-    company: "App Aura, Lahore",
+    role: "Frontend Developer Intern",
+    company: "App Aura",
+    location: "Lahore · Remote",
     period: "Jun 2026 – Sep 2026",
     points: [
       "Built a pharmacy management frontend with React 19, Vite and React Router.",
@@ -147,25 +157,30 @@ export const experience: Experience[] = [
       "Deployed the app on Render and managed source code on GitHub.",
       "Researched Next.js vs React 19 and prepared a step-by-step migration plan for the production frontend.",
     ],
+    tags: ["React 19", "Vite", "REST API", "Render"],
   },
   {
-    role: "Frontend Development Intern (Remote)",
+    role: "Frontend Development Intern",
     company: "CodeAlpha",
+    location: "Remote",
     period: "May 2026",
     points: [
       "Built responsive web pages and UI components with HTML5, CSS3 and JavaScript (ES6+).",
       "Focused on clean layouts, interactivity and cross-browser compatibility.",
     ],
+    tags: ["HTML", "CSS", "JavaScript"],
   },
   {
-    role: "Data Analyst (Remote)",
-    company: "E-Bay Project-based",
+    role: "Data Analyst",
+    company: "E-Bay",
+    location: "Remote · Project-based",
     period: "Aug 2025 – Oct 2025",
     points: [
       "Analyzed e-commerce sales data to find trends, customer behavior and product performance.",
       "Used SQL for extraction and Python for cleaning and exploratory analysis.",
       "Built interactive Tableau dashboards for key KPIs.",
     ],
+    tags: ["SQL", "Python", "Tableau"],
   },
 ];
 
@@ -296,6 +311,13 @@ export const sectionHeadings = {
     highlight: "toolkit",
     subtitle: "Technologies I use to design, build and ship.",
   },
+  experience: {
+    index: "03",
+    label: "Experience",
+    title: "Where I've worked",
+    highlight: "worked",
+    subtitle: "From data analysis to full-stack development.",
+  },
 } satisfies Partial<Record<SectionId, SectionHeadingContent>>;
 
 /** About section copy. Stat values are derived in the component from the data above. */
@@ -315,6 +337,17 @@ export const aboutSection = {
 
 export const skillsSection = {
   countLabel: (n: number) => `${n} ${n === 1 ? "skill" : "skills"}`,
+} as const;
+
+export const experienceSection = {
+  current: "Current",
+  showMore: "Show more",
+  showLess: "Show less",
+  /** Accessible name suffix so each toggle is distinguishable. */
+  toggleContext: (role: string, company: string) => `details for ${role} at ${company}`,
+  tagsLabel: (company: string) => `Focus areas at ${company}`,
+  /** Bullets visible before "Show more". */
+  collapsedCount: 2,
 } as const;
 
 /** UI labels and accessible names. */
