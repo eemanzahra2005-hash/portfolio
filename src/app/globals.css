@@ -84,9 +84,16 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Story stage: pause looping CSS animations while it's off-screen. */
+/* Story stage: pause looping CSS animations while the timeline isn't running. */
 [data-story-paused] * {
   animation-play-state: paused !important;
+}
+
+/* Story controls: while playing, mouse users see them on hover/focus (touch always sees them). */
+@media (hover: hover) and (pointer: fine) {
+  [data-story-stage][data-playing]:not(:hover) [data-story-controls]:not(:focus-within) {
+    opacity: 0;
+  }
 }
 
 @layer base {
@@ -157,6 +164,11 @@ html.lenis body {
   }
   [data-reveal-clip] {
     clip-path: none !important;
+  }
+  [data-story-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
   }
   *,
   *::before,

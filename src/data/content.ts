@@ -375,6 +375,13 @@ export const story = {
   },
   closing: "Let's build yours.",
   cta: hero.primaryCta,
+  controls: {
+    label: "Story playback",
+    play: "Play story",
+    pause: "Pause story",
+    scene: (n: number, total: number) => `Scene ${n} of ${total}`,
+    goTo: (n: number, total: number, title: string) => `Scene ${n} of ${total}: ${title}`,
+  },
 } as const;
 
 export interface SectionHeadingContent {
