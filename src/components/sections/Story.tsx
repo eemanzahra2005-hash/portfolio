@@ -217,7 +217,7 @@ function Counter({ value, delay, reduce }: { value: number; delay: number; reduc
 
   useEffect(() => {
     if (reduce) return;
-    const controls = animate(count, value, { duration: 1.2, delay, ease: EASE });
+    const controls = animate(count, value, { duration: 1, delay, ease: EASE });
     return () => controls.stop();
   }, [count, value, delay, reduce]);
 
@@ -240,11 +240,11 @@ interface SceneDef {
 }
 
 const scenes: SceneDef[] = [
-  { duration: 3.4, title: story.headline, Component: SceneHeadline },
-  { duration: 3, title: story.tileLabel(projectCount), Component: SceneTile },
-  { duration: 3.6, title: story.briefLabel, Component: SceneBrief },
-  { duration: 3.2, title: story.stats.label, Component: SceneStats },
-  { duration: 4, title: story.closing, Component: SceneFinale },
+  { duration: 2.5, title: story.headline, Component: SceneHeadline },
+  { duration: 2.5, title: story.tileLabel(projectCount), Component: SceneTile },
+  { duration: 2.5, title: story.briefLabel, Component: SceneBrief },
+  { duration: 2.5, title: story.stats.label, Component: SceneStats },
+  { duration: 3.5, title: story.closing, Component: SceneFinale },
 ];
 
 /* Backdrop glow per scene, plus the stadium glow behind the tile (2) and the finale (5). */
@@ -264,14 +264,14 @@ const sceneVariants: Variants = {
     opacity: 1,
     scale: 1,
     filter: "blur(0px)",
-    transition: { duration: 0.9, ease: EASE },
+    transition: { duration: 0.4, ease: EASE },
     transitionEnd: { filter: "none" },
   },
   exit: {
     opacity: 0,
     scale: 0.97,
     filter: "blur(10px)",
-    transition: { duration: 0.55, ease: EASE },
+    transition: { duration: 0.4, ease: EASE },
   },
 };
 
@@ -353,7 +353,7 @@ export function Story() {
             className="absolute inset-[-25%]"
             initial={false}
             animate={glowByScene[sceneIndex]}
-            transition={reduce ? { duration: 0 } : { duration: 2.4, ease: EASE }}
+            transition={reduce ? { duration: 0 } : { duration: 1.4, ease: EASE }}
           >
             <div className="absolute inset-0 motion-safe:animate-drift" style={glowBackground} />
           </motion.div>
@@ -362,7 +362,7 @@ export function Story() {
             style={stadiumBackground}
             initial={false}
             animate={pillByScene[sceneIndex] ? { opacity: 0.85, scale: 1 } : { opacity: 0, scale: 0.4 }}
-            transition={reduce ? { duration: 0 } : { duration: 1.1, ease: EASE }}
+            transition={reduce ? { duration: 0 } : { duration: 0.6, ease: EASE }}
           />
         </StageBackdrop>
 
@@ -466,7 +466,7 @@ function StoryControls({
 
 const headlineVariants: Variants = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.12, delayChildren: 0.2 } },
+  show: { transition: { staggerChildren: 0.06, delayChildren: 0.1 } },
 };
 
 const wordVariants: Variants = {
@@ -475,7 +475,7 @@ const wordVariants: Variants = {
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
-    transition: { duration: 0.9, ease: EASE },
+    transition: { duration: 0.5, ease: EASE },
     transitionEnd: { filter: "none" },
   },
 };
@@ -506,7 +506,7 @@ const pauseVariants: Variants = {
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
-    transition: { duration: 0.8, delay: 0.1, ease: EASE },
+    transition: { duration: 0.5, delay: 0.05, ease: EASE },
     transitionEnd: { filter: "none" },
   },
 };
@@ -518,15 +518,15 @@ const tileVariants: Variants = {
     opacity: 1,
     scale: 1,
     transition: {
-      scale: { type: "spring", stiffness: 260, damping: 14, delay: 0.5 },
-      opacity: { duration: 0.3, delay: 0.5 },
+      scale: { type: "spring", stiffness: 320, damping: 16, delay: 0.25 },
+      opacity: { duration: 0.25, delay: 0.25 },
     },
   },
 };
 
 const badgeVariants: Variants = {
   hidden: { scale: 0 },
-  show: { scale: 1, transition: { type: "spring", stiffness: 400, damping: 15, delay: 0.95 } },
+  show: { scale: 1, transition: { type: "spring", stiffness: 450, damping: 17, delay: 0.5 } },
 };
 
 function SceneTile({ reduce }: SceneProps) {
@@ -544,7 +544,7 @@ function SceneTile({ reduce }: SceneProps) {
                 variants={badgeVariants}
                 className="absolute -top-2.5 -right-2.5 grid h-9 min-w-9 place-items-center rounded-full bg-white px-2 text-sm font-semibold text-stage shadow-[0_8px_24px_-6px_rgb(0_0_0/0.6)]"
               >
-                <Counter value={projectCount} delay={1.05} reduce={reduce} />
+                <Counter value={projectCount} delay={0.55} reduce={reduce} />
               </motion.span>
               <span className="sr-only">{story.tileLabel(projectCount)}</span>
             </>
@@ -559,7 +559,7 @@ function SceneTile({ reduce }: SceneProps) {
 
 const labelVariants: Variants = {
   hidden: { opacity: 0, y: 16 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.7, delay: 0.1, ease: EASE } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, delay: 0.05, ease: EASE } },
 };
 
 interface BriefCustom {
@@ -591,7 +591,7 @@ const briefCardVariants: Variants = {
       rotate: [0, 0, desktop ? slot * 3 : 0],
       rotateX: [tilt * 14, tilt * 14, 0],
       rotateY: [tilt * -16, tilt * -16, 0],
-      transition: { duration: 2, times: [0, 0.35, 1], ease: EASE, delay: 0.25 + index * 0.06 },
+      transition: { duration: 1.2, times: [0, 0.35, 1], ease: EASE, delay: 0.1 + index * 0.05 },
     };
   },
 };
@@ -630,7 +630,7 @@ const statCardVariants: Variants = {
   show: (index: number) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.9, delay: 0.2 + index * 0.15, ease: EASE },
+    transition: { duration: 0.5, delay: 0.1 + index * 0.08, ease: EASE },
   }),
 };
 
@@ -638,7 +638,7 @@ const ringVariants: Variants = {
   hidden: { pathLength: 0 },
   show: (index: number) => ({
     pathLength: 1,
-    transition: { duration: 1.2, delay: 0.4 + index * 0.15, ease: EASE },
+    transition: { duration: 1, delay: 0.2 + index * 0.08, ease: EASE },
   }),
 };
 
@@ -661,7 +661,7 @@ function SceneStats({ reduce }: SceneProps) {
               <p className="text-sm text-white/70">{stat.label}</p>
               <p className="mt-0.5 flex items-baseline gap-1.5">
                 <span aria-hidden="true" className="font-display text-4xl leading-none text-white md:text-6xl">
-                  <Counter value={stat.value} delay={0.4 + i * 0.15} reduce={reduce} />
+                  <Counter value={stat.value} delay={0.2 + i * 0.08} reduce={reduce} />
                 </span>
                 <span aria-hidden="true" className="text-sm text-white/70">
                   {stat.unit}
@@ -696,7 +696,7 @@ function SceneStats({ reduce }: SceneProps) {
 
 /* ------------------------------------------------------------------ scene 5: cursor clicks "+" → CTA */
 
-const CLICK = 1.55; // seconds into the scene when the cursor clicks
+const CLICK = 1.1; // seconds into the scene when the cursor clicks
 
 const discVariants: Variants = {
   hidden: { opacity: 0, scale: 0.5 },
@@ -704,15 +704,15 @@ const discVariants: Variants = {
     opacity: 1,
     scale: 1,
     transition: {
-      scale: { type: "spring", stiffness: 220, damping: 16, delay: 0.1 },
-      opacity: { duration: 0.4, delay: 0.1 },
+      scale: { type: "spring", stiffness: 300, damping: 18, delay: 0.05 },
+      opacity: { duration: 0.3, delay: 0.05 },
     },
   },
 };
 
 const pressVariants: Variants = {
   hidden: { scale: 1 },
-  show: { scale: [1, 0.88, 1], transition: { duration: 0.35, delay: CLICK, times: [0, 0.4, 1] } },
+  show: { scale: [1, 0.88, 1], transition: { duration: 0.3, delay: CLICK, times: [0, 0.4, 1] } },
 };
 
 const rippleVariants: Variants = {
@@ -720,7 +720,7 @@ const rippleVariants: Variants = {
   show: {
     opacity: [0, 0.7, 0],
     scale: [1, 2.6],
-    transition: { duration: 0.9, delay: CLICK + 0.1, ease: EASE },
+    transition: { duration: 0.6, delay: CLICK + 0.05, ease: EASE },
   },
 };
 
@@ -734,19 +734,19 @@ function cursorVariants(duration: number, delay: number): Variants {
       scale: [1, 0.78, 1],
       transition: {
         default: { duration, delay, ease: EASE },
-        opacity: { duration: 0.3, delay },
-        scale: { duration: 0.35, delay: CLICK, times: [0, 0.4, 1] },
+        opacity: { duration: 0.25, delay },
+        scale: { duration: 0.3, delay: CLICK, times: [0, 0.4, 1] },
       },
     },
   };
 }
 
-const pointerVariants = cursorVariants(1, 0.45);
-const trailVariants = cursorVariants(1.25, 0.5);
+const pointerVariants = cursorVariants(0.8, 0.25);
+const trailVariants = cursorVariants(0.95, 0.28);
 
 const closingVariants: Variants = {
   hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.8, delay: CLICK + 0.3, ease: EASE } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, delay: CLICK + 0.2, ease: EASE } },
 };
 
 function SceneFinale({ reduce, onCtaFocus }: SceneProps) {
