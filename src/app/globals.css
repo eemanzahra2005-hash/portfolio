@@ -14,6 +14,12 @@
   --color-accent: #2563eb;
   --color-accent-soft: #eff6ff;
 
+  /* Story section only: dark stage + glow tints that sit next to the accent. */
+  --color-stage: #0b0b12;
+  --color-stage-raised: #13131d;
+  --color-glow-indigo: #6366f1;
+  --color-glow-violet: #8b5cf6;
+
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 
   --animate-nudge-up: nudge-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) infinite;
@@ -46,6 +52,41 @@
       transform: translate3d(-50%, 0, 0);
     }
   }
+
+  --animate-drift: drift 24s ease-in-out infinite alternate;
+  @keyframes drift {
+    0% {
+      transform: translate3d(-6%, -4%, 0) rotate(0deg) scale(1);
+    }
+    50% {
+      transform: translate3d(4%, 3%, 0) rotate(10deg) scale(1.08);
+    }
+    100% {
+      transform: translate3d(-2%, 6%, 0) rotate(-6deg) scale(1.02);
+    }
+  }
+
+  --animate-pulse-ring: pulse-ring 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  @keyframes pulse-ring {
+    from {
+      transform: scale(1);
+      opacity: 0.55;
+    }
+    to {
+      transform: scale(1.9);
+      opacity: 0;
+    }
+  }
+}
+
+/* Film grain for the Story stage (static SVG noise, no animation). */
+@utility bg-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Story stage: pause looping CSS animations while it's off-screen. */
+[data-story-paused] * {
+  animation-play-state: paused !important;
 }
 
 @layer base {

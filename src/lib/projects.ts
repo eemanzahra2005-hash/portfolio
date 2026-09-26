@@ -30,14 +30,34 @@ function hash(input: string) {
   return h >>> 0;
 }
 
+/** Stable pseudo-random integers in [min, max], read from different bits of the seed's hash. */
+function picker(seed: string) {
+  const h = hash(seed);
+  return (shift: number, min: number, max: number) => min + ((h >>> shift) % (max - min + 1));
+}
+
+/** Dark thumbnail for the Story cards: accent → indigo → violet, seeded by the title. */
+export function stageGradient(title: string): CSSProperties {
+  const pick = picker(title);
+  const blob = (x: number, y: number, color: string, strength: number, size: number) =>
+    `radial-gradient(circle at ${x}% ${y}%, color-mix(in srgb, var(${color}) ${strength}%, transparent), transparent ${size}%)`;
+
+  return {
+    backgroundColor: "var(--color-stage-raised)",
+    backgroundImage: [
+      blob(pick(0, 5, 40), pick(4, 5, 60), "--color-accent", pick(8, 65, 85), pick(12, 50, 70)),
+      blob(pick(16, 60, 95), pick(20, 40, 95), "--color-glow-violet", pick(24, 55, 75), pick(28, 45, 65)),
+      `linear-gradient(${pick(2, 100, 260)}deg, var(--color-glow-indigo), var(--color-stage-raised))`,
+    ].join(", "),
+  };
+}
+
 /**
  * Deterministic header background seeded by the project title.
  * Built only from the accent/surface tokens, so every card stays on-palette.
  */
 export function projectGradient(title: string): CSSProperties {
-  const h = hash(title);
-  const pick = (shift: number, min: number, max: number) =>
-    min + ((h >>> shift) % (max - min + 1));
+  const pick = picker(title);
   const blob = (x: number, y: number, strength: number, size: number) =>
     `radial-gradient(circle at ${x}% ${y}%, color-mix(in srgb, var(--color-accent) ${strength}%, transparent), transparent ${size}%)`;
 

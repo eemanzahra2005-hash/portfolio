@@ -8,6 +8,7 @@
 - [x] Phase 5 — Projects (6 README-backed featured projects, tech filter chips with layout animations, title-seeded gradient cards with mouse-only 3D tilt + spotlight, accessible details dialog with shared-layout title, server-fetched "More on GitHub" list revalidated daily)
 - [x] Phase 6 — Contact + Footer (contact cards with copy-email toast + live Islamabad clock, floating-label form with inline validation sent via a Server Action to Web3Forms, animated button states, footer with closing line + drawn-underline email, floating back-to-top with scroll-progress ring)
 - [x] Phase 7 — Polish / SEO (full metadata + canonical, OG/Twitter image with photo and brand fonts, EZ monogram icons, sitemap/robots/manifest, Person JSON-LD, floating 404, performance, accessibility, reduced-motion and responsive audit)
+- [x] Story — cinematic scroll section between Hero and About (sticky dark stage, 5 scroll-driven scenes, static reduced-motion fallback)
 - [ ] Phase 8 — Deploy
 
 ## Notes
@@ -40,6 +41,18 @@
 - `useReducedMotion` comes from `src/components/motion/useReducedMotion.ts`, not `motion/react`. Motion's hook reads the media query during the first client render, which caused a hydration mismatch (#418) for reduced-motion users.
 - `ScrollProgress` is rendered in `page.tsx`, not the root layout, so it doesn't show a full bar on the non-scrolling 404 page.
 - The project dialog loads through `next/dynamic` (a separate ~4 kB chunk fetched on first open).
+
+## Story section
+
+- `src/components/sections/Story.tsx`, copy in `story` (`content.ts`). A 300vh (mobile) / 400vh (md+) wrapper holds a sticky `100svh` stage. `useScroll` (`["start start", "end end"]`) is smoothed with `useSpring`, and every scene is `useTransform` of that value: 0–0.2 headline, 0.2–0.35 "But…" + EZ tile with project-count badge, 0.35–0.6 project-brief cards, 0.6–0.8 stat cards, 0.8–1 cursor clicks "+" → CTA.
+- The headline words reveal on a timer the first time the stage is half in view (so it isn't empty at progress 0), then fade with scroll.
+- All numbers are derived: badge = `projects.length`; cards = first `story.briefCount` projects (tech count + year, or main tech when `year` is empty); stats = projects with `live`, total skills, `experience.length`.
+- Stage colours are new tokens used only here: `stage`, `stage-raised`, `glow-indigo`, `glow-violet` (a third intentional exception to accent-only, requested for this section). Grain is the `bg-grain` utility, and the glow drift and "+" pulse rings are the `animate-drift` / `animate-pulse-ring` keyframes.
+- Reduced motion: CSS swaps in a static vertical list (`hidden motion-reduce:block`) that works before hydration, and the animated tree unmounts once the hook resolves. The static copy is `display: none` otherwise, so screen readers never read both.
+- Performance: no `backdrop-filter` (the glass cards are solid layers, so nothing is re-blurred per frame). CSS loops pause via `[data-story-paused]` when the stage is off-screen, and the cursor, trail and pulse rings mount only after progress passes 0.7. Rings use `pathLength` (same as BackToTop).
+- Layout switch for the cards (row on md+, column on mobile) runs through a `layout` motion value, fed by a hydration-safe `matchMedia` hook.
+- The CTA ignores pointer events until it's revealed. If it's focused by keyboard earlier, the page scrolls to the end of the story.
+- Not added to the navbar. It already has 5 links + CV, and the story is an intro, not a destination.
 
 ## Phase 7 audit
 

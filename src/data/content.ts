@@ -347,6 +347,36 @@ export const hero = {
   phoneLabel: `Call ${profile.phone}`,
 } as const;
 
+/** Cinematic scroll "Story" between Hero and About. Every number is derived in the component. */
+export const story = {
+  label: "My story in five scenes",
+  headline: "Great ideas deserve great products.",
+  /** Word of the headline rendered in italic gradient. */
+  highlight: "products",
+  pause: "But…",
+  tileLabel: (n: number) =>
+    `${profile.shortName}: ${n} ${n === 1 ? "project" : "projects"} built`,
+  briefLabel: "Project brief",
+  /** How many featured projects become brief cards. */
+  briefCount: 3,
+  card: {
+    tech: "Technologies",
+    year: "Year",
+    mainTech: "Main tech",
+  },
+  stats: {
+    label: "By the numbers",
+    shipped: "Projects shipped",
+    shippedUnit: "live",
+    technologies: "Technologies",
+    technologiesUnit: "skills",
+    experience: "Experience",
+    roles: (n: number) => (n === 1 ? "role" : "roles"),
+  },
+  closing: "Let's build yours.",
+  cta: hero.primaryCta,
+} as const;
+
 export interface SectionHeadingContent {
   index: string;
   label: string;
